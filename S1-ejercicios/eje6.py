@@ -16,3 +16,4 @@ while n!=numero_adivinar:
         print("El numero es menor que ese")
     elif n==numero_adivinar:
         print("Felicidades adivinaste el número!")
+        

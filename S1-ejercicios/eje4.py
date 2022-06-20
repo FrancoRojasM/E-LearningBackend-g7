@@ -20,6 +20,3 @@ while nuevo_numero!=1:
         nuevo_numero=nuevo_numero*3+1;
         lista.append(nuevo_numero)
 print(lista)
-        
-
-        

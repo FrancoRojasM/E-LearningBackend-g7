@@ -26,6 +26,3 @@ print("contador multiplos de 3: {}".format(cont_multiplos_3))
 print ("multiplos de 5: ",list_mult_5)
 print("contador multiplos de 5: {}".format(cont_multiplos_5))
 
-
-
-

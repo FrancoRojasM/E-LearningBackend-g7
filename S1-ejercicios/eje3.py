@@ -14,3 +14,4 @@ for i in range(altura,0,-1):
     for j in range(i):
         print("*",end="")
     print("")
+    

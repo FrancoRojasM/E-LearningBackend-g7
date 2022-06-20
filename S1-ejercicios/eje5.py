@@ -10,4 +10,3 @@ texto = "hola alumnos buenas noches ya se viene el break"
 mayusc_texto=texto.title()
 cadena=mayusc_texto.split()
 print (cadena)
-
