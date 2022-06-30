@@ -1,6 +1,6 @@
 pip list>lista todas las librerias que tenemos instaladas
 python -m venv NOMBRE > creara un entorno virtual en la ubicacion donde estemos 
-NOMBRE/Scriots/activate > levanta el entorno virtual en la terminal si esta es CMD,powershell o terminal de windows.
+NOMBRE/Scripts/activate > levanta el entorno virtual en la terminal si esta es CMD,powershell o terminal de windows.
 
 source NOMBRE/Scripts/activate > levanta el entorno virtual en la terminal si esta es GIT bash, terminales de S.O linux o macOS
 
