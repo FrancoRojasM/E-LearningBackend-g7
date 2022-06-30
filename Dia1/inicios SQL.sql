@@ -19,4 +19,55 @@ CREATE TABLE productos(
     nombre VARCHAR(50),
     fecha_vencimiento DATE  
 );
-select * from productos;
+
+
+-- DDL data definition language(Lenguaje de manipulacion de datos)
+-- con esto extraigo, iserto, actualizo y elimino la informacion de la bd
+
+INSERT INTO productos (id,nombre,fecha_vencimiento) VALUES (DEFAULT,'Aguaymanto','2022-07-01');
+INSERT INTO productos (id,nombre,fecha_vencimiento) VALUES (DEFAULT,'Cebolla','2022-07-10'),
+														   (DEFAULT,'Limon','2022-06-30');	
+
+-- SELECT
+-- Al momento de insertar registros y si estamos manejando el autoincrementador y al momento de realizar un registro
+-- este fallase el incrementador igual incrementa
+SELECT nombre,fecha_vencimiento,id FROM productos;
+SELECT * FROM productos;
+SELECT fecha_vencimiento AS 'Fecha de Vencimiento' FROM productos;
+
+-- Con la clausula de condicion WHERE indicaremos un filtro para los resultados, esta es la mejor forma
+-- de poder hacer busquedas y es recomendable hacerlas a nivel de BD
+SELECT*FROM productos WHERE nombre='Cebolla';
+
+-- AND  > todas las condiciones tienen que ser Verdaderas
+
+SELECT*FROM productos WHERE nombre='Cebolla' AND id=1;
+
+-- OR > cualquiera de las condiciones tienen que ser verdaderas
+SELECT*FROM productos WHERE nombre='Cebolla' OR id=1;
+
+-- Que en la columna nombre tengamos la letra 'a' y luego por ahi tendremos la letra 'o'
+-- % > significa un numero no determinado de letras a cumplirse
+SELECT* FROM productos WHERE nombre Like '%a%o%';
+
+-- _ > significa que tiene que respetar un numero determinado de caracteres
+SELECT* FROM productos WHERE nombre Like '___a%';
+
+-- ESTO SOLAMENTE FUNCIONA EN SQL SERVER
+ -- SELECT* FROM productos WHERE nombre Like '[C-L]%';
+ 
+ -- UPDATE > sirve para actualizar uno o varios registros dependiendo de su condicional
+ UPDATE productos SET nombre = 'Cebolla China' WHERE nombre = 'Cebolla';
+
+-- Desactivar el modo seguro > que lo que hace es que ahora podemos hacer actualizaciones sin la necesidad
+-- de tener en la condicion a una columna UNIQUE O que sea una KEY
+-- No se recomienda desactivar porque podria llevar a hacer modificaciones masivas sin la posibilidad
+-- de deshacer esos cambios
+SET SQL_SAFE_UPDATES = false; 
+ 
+ 
+
+-- DDL data difinition laguage(Lenguaje e definicion de datos)
+-- Con esto extraigo, inserto, actualizo y elimino la informacion de la bd
+-- INSEERT (insertar nueva informacion)
+
