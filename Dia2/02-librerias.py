@@ -8,3 +8,4 @@ resultado=camelcase.hump(parrafo)
 print(resultado)
 
 # patron de Diseño Singleton
+# TODO: Replicar el funcionamiento de la libreria
