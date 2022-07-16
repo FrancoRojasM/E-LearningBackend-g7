@@ -1,48 +1,40 @@
-import imp
-from flask import Flask
-from config import conexion #si estan en el mimsmo nivel, se importa directamente
-# from prueba.otro import nombre -> si está en diferentes carpetas se debe agregar el . y el nombre del archivo
-from models.participante import Participante
 from dotenv import load_dotenv
-# environ > me devuelve todas la variables de entorno en forma de un diccionario
-from os import environ
+from flask import Flask
+from config import conexion
 from controllers.participante import ParticipanteController
-from flask_restful import Api
+from models.participante import Participante
 from flask_cors import CORS
+# environ > me devuelve todas las variables de entorno en forma de un diccionario 
+from os import environ
 
-# carga todas las variables declaras en el archivo .env como si fuesen variables de entorno para que puedan ser accedidas desde el metodo 'environ'
+from flask_restful import Api
+
+# carga todas las variables declaradas en el archivo .env como si fuesen variables de entorno para que puedan ser accedidas desde el metodo 'environ'
 load_dotenv()
 
 app = Flask(__name__)
-api=Api(app)
+api = Api(app)
 CORS(app)
-# ESTO SIRVE PARA CONECTARME A LA BD  
-# URI=> Identificador de recursos uniforme
-# cadena de conexion
-# dialecto:la bd que usas(msql,mysql,oracle,etc)
-# dialect://usuario:password@host:puerto/base_de_Datos
-app.config['SQLALCHEMY_DATABASE_URI']=environ['DATABASE_URL']
-# sqlalchemy  hace un seguimiento a las modificaciones que haremos a la BD pero actualemente tiene un valor predeterminado PERO en futuras versiones tendremos que OBLIGATORIAMENTE indicar si queremos hacer el seguimiento o no
-# esto para que no genere warning
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
+# URI
+app.config['SQLALCHEMY_DATABASE_URI']= environ['DATABASE_URL']
 
-# inicializo mi conexion de mi sqlalchemy con la BD PERO todavia no me he conectado
+#sqlalchemy hace un seguimiento a las modificaciones que haremos a la bd pero actualmente tiene un valor predeterminado pero en futuras versiones tendremos que obligatoriamente indicar si queremos hacer el seguimiento
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# inicializo mi conexion de mi sqlalchemy con la base de datos PERO todavia no me he conectado
 conexion.init_app(app)
 
-# se ejecuta la conexion y se crearan las tablas PERO si no hay ninguna tabla a crear entonces no lanzara error de credenciales invalidas
-conexion.create_all(app=app)
+# se ejecuta la conexion y se crearan las tablas PERO si no hay ningun tabla a crear entonces no lanzara error de credenciales invalidas
+# Si ya se creo la tabla entonces no devo volver a intentar crear las tablas porque me dara error
+# conexion.create_all(app=app)
 
 @app.route('/', methods=['GET'])
 def inicio():
     return{
-        'message':'Bienvenido a mi API de conciertos'
+        'message': 'Bienvenido a mi API de concierto'
     }
+# definicion de rutas usando flask resful
+api.add_resource(ParticipanteController, '/participantes')
 
-# definicion de rutas usando Flask Restful
-api.add_resource(ParticipanteController,'/participantes')
-
-
-# va al ultimo para que ejecute todo el codigo de arriba, ya que app.run hará que corra app.py
-if __name__=='__main__':
+if __name__ == '__main__':
     app.run(debug=True)
-
