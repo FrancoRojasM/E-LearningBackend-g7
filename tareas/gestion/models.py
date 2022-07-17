@@ -15,12 +15,12 @@ class Tarea(models.Model):
     fechaVencimiento= models.DateTimeField(db_column='fecha_vencimiento',null=False)
     estado= models.CharField(choices=estadoOpciones, max_length=10,default='POR_HACER')
 
-class Meta:
+    class Meta:
 
-    # opciones de modelo: https://docs.djangoproject.com/en/4.0/ref/models/options/
+        # opciones de modelo: https://docs.djangoproject.com/en/4.0/ref/models/options/
 
-    # El nombre de la tabla de base de datos que se va a utilizar para el modelo
-    db_table='tareas'
-    # el ordenamiento será de manera descendiente por la columna fecha_vencimiento
-    ordering=['-fechaVencimiento']
+        # El nombre de la tabla de base de datos que se va a utilizar para el modelo
+        db_table='tareas'
+        # el ordenamiento será de manera descendiente por la columna fecha_vencimiento
+        ordering=['-fechaVencimiento']
 
