@@ -10,7 +10,7 @@ class Tarea(models.Model):
     estadoOpciones=[('POR_HACER','POR_HACER'),('HACIENDO','HACIENDO'),('HECHO','HECHO')]
     id = models.AutoField(primary_key=True,unique=True,null=False)
     nombre = models.CharField(max_length=100, null=False)
-    descripcion = models.TextField()
+    descripcion = models.TextField(null=True)
     # db_column='es para indicar como se va a llamar en mi BD'
     fechaVencimiento= models.DateTimeField(db_column='fecha_vencimiento',null=False)
     estado= models.CharField(choices=estadoOpciones, max_length=10,default='POR_HACER')
