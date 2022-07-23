@@ -144,3 +144,13 @@ AUTH_USER_MODEL='autorizacion.Usuario'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework_simplejwt.authentication.JWTAuthentication',]
 }
+
+CORS_ALLOW_ALL_ORIGINS=True
+
+from datetime import timedelta
+
+SIMPLE_JWT={
+    # Modificar la duracion que tendra la token de acceso ,para modificar otras propiedades de la libreria:
+    # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
+    'ACCESS_TOKEN_LIFETIME':timedelta(hours=1,minutes=10,seconds=5)
+}
