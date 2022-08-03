@@ -1,27 +1,16 @@
-import express from 'express'
-import { PrismaConnector } from './prisma.js'
+import express from "express";
+import {departamentosRouter} from "./routes/departamentos.routes.js";
+import {trabajadoresRouter} from "./routes/trabajadores.routes.js"
 
 const app=express()
 const PORT=process.env.PORT
 
-app.get('/departamentos', async(req,res)=>{  
-    try{
-    //SELECT * FROM departamentos;
-    const resultado=await PrismaConnector.departamento.findMany().then((resultado)=>{
-        console.log(resultado);
-    }).catch((razon)=>{
-        console.error(razon);
-    });
-    console.log("hola");
-    return res.json({
-        message:"Hola",
-    });
-    } catch(razon){
-        return res.json({
-        message:"Algo salio mal",
-        });
-    }
-});
+app.use(express.json());
+
+app.use(departamentosRouter);
+
+app.use(trabajadoresRouter);
+
 
 app.listen(PORT,()=>{
     console.log(`Servidor corriendo exitosamente en el puerto ${PORT}`); //Backtips    
