@@ -1,8 +1,8 @@
-import { trabajadoresRequestDTO } from '../dtos/trabajadores.dto.js';
+import { trabajadoresRequestDTO, cambiarPasswordRequestDTO } from '../dtos/trabajadores.dto.js';
 import bcryptjs from "bcryptjs";
 import cryptoJs from "crypto-js";
 import {PrismaConnector} from "../prisma.js"
-import { validarCorreo } from '../utils/correos.js';
+import { validarCorreo, cambioPassword } from '../utils/correos.js';
 
 export const postTrabajador=async(req,res)=>{
     try {
@@ -46,4 +46,92 @@ export const postTrabajador=async(req,res)=>{
     }
 };
 
-export const cambiarPassword=(req,res)=>{};
+export const validarTrabajador=async(req,res)=>{
+    const {token}=req.body;
+    try {
+    
+       const data= cryptoJs.AES.decrypt(token,process.env.LLAVE_ENCRIPTACION).toString(cryptoJs.enc.Utf8);
+       console.log(data);
+
+    //    la desencriptacion si es que la token es invalida retornara null entonces forzamos el errror con el siguiente IF
+
+        if (!data) {
+            throw new Error('Token no valida')
+        }
+
+
+        const infoToken=JSON.parse(data);
+        console.log(infoToken);
+        if(infoToken.caducidad< new Date()){
+            throw new Error('La token ya venció');
+        }
+
+        // busco al trabajador
+        const trabajador= await PrismaConnector.trabajador.findUniqueOrThrow({
+            where:{id:infoToken.id},
+        })
+        // verifico que no esté validado
+        if (trabajador.validado) {
+            throw new Error("Usuario ya fue validado");
+        }
+        // valido
+        await PrismaConnector.trabajador.update({
+            data:{validado:true},
+            where:{id:infoToken.id}
+        });
+
+
+       return res.json({
+        message:"Trabajador validado exitosamente",
+        result:null,
+       })
+
+        
+    } catch (error) {
+        return res.status(400).json({
+            message:"Error al validar la token",
+            result: error.message
+        });
+    }
+    
+};
+
+export const cambiarPassword = async (req, res) => {
+    try {
+      const data = cambiarPasswordRequestDTO(req.body);
+  
+      const trabajador = await PrismaConnector.trabajador.findUniqueOrThrow({
+        where: { email: data.email },
+      });
+      // TODO: que las contraseñas no pueden ser iguales la nueva que la anterior
+  
+      if (bcryptjs.compareSync(data.antiguaPassword, trabajador.password)) {
+        const nuevaPassword = bcryptjs.hashSync(data.nuevaPassword);
+  
+        await PrismaConnector.trabajador.update({
+          data: {
+            password: nuevaPassword,
+          },
+          where: {
+            email: data.email,
+          },
+        });
+  
+        await cambioPassword({
+          destinatario: trabajador.email,
+          nombre: trabajador.nombre,
+        });
+        return res.json({
+          message: "Contraseña actualizada exitosamente",
+          result: null,
+        });
+      } else {
+        throw new Error("La contraseña es incorrecta");
+      }
+    } catch (error) {
+      return res.json({
+        message: "Error al actualizar la password",
+        result: error.message,
+      });
+    }
+  };
