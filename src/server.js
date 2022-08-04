@@ -20,7 +20,8 @@ app.use(
 const origenesPermitidos=['http://miaplicacion.com']
 
 app.use(cors((req,cb)=>{
-    const corsOptions={origin:false}
+    const corsOptions={origin:false};
+    // nullish coalescing operator
     if (origenesPermitidos.indexOf(req.header("Origin")?? "")!== -1) {
         corsOptions.origin=true;
     }
