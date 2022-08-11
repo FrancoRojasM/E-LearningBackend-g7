@@ -1,0 +1,34 @@
+{
+  "name": "mongo-express",
+  "version": "1.0.0",
+  "description": "Proyecto de ecommerce usando mongodb con express",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start:dev": "dotenv -e .env -- nodemon ./src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FrancoRojasM/E-LearningBackend-g7.git"
+  },
+  "keywords": [
+    "Mongodb",
+    "express",
+    "ecommerce",
+    "codigo"
+  ],
+  "author": "franco rojas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FrancoRojasM/E-LearningBackend-g7/issues"
+  },
+  "homepage": "https://github.com/FrancoRojasM/E-LearningBackend-g7#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "mongoose": "^6.5.2"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^6.0.0",
+    "nodemon": "^2.0.19"
+  }
+}
