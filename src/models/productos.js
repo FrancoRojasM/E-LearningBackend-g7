@@ -2,13 +2,23 @@ import mongoose from "mongoose";
 
 // Todas las configuracion de nuetsra coleccion que declaremos en mongoose solamente van a servir para mongoose(recordemos que en una bd no relacional podemos agregar lo que queramos), por ende se recomienda NO TOCAR DIRECTAMENTE LA BD SI SE TRABAJA CON MONGOOSE
 
+ const unidadMedidaValores=['Litros','kilos','N/A','Onzas']
+
 const detalleProductoSchema=new mongoose.Schema({
     tallas:[mongoose.Schema.Types.String],
     unidadMedida:{
         alias:'unidad_medida',
         type: mongoose.Schema.Types.String,
-        enum: ['Litros','kilos','N/A','Onzas'],
+        enum: unidadMedidaValores,
         default:"N/A",
+        set:(valor)=>{
+            console.log(valor);
+            if (unidadMedidaValores.includes(valor)) {
+                return valor;
+            }else{
+                throw new Error()
+            }
+        }
     }
 })
 
@@ -24,7 +34,11 @@ const productoSchema= new mongoose.Schema({
         type:mongoose.Schema.Types.Decimal128,
         required:true,
         min:0.0,
-        alias:"precio_venta",
+        // alias:"precio_venta",
+        get:(valor)=>{
+            // console.log(valor);
+            return +valor.toString();
+        }
     },
     cantidad:{
         type:mongoose.Schema.Types.Number,
@@ -42,3 +56,15 @@ const productoSchema= new mongoose.Schema({
 
 //  esto hace la relacion de la coleccion en la base de datos basandose en el schema previamente definido
 export const  productoModel= mongoose.model("productos",productoSchema);
+
+// seteamos el comportamiento en este caso del metodo toJSOn para convertir la informacion que tengamos en la llave precio y ademas eliminamos la llave __v
+productoSchema.set("toJSON",{
+    getters:true,
+    // transform:(doc,prod)=>{
+    //     if (prod.prrecio) {
+    //         prod.precio=+prod.precio.toString();
+    //     }
+    //     delete prod.__v;
+    //     return prod;
+    // }
+})
